@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head></head>
+<body>
+	
+<!-- form -->
+<script type="text/javascript" src="js/form-validation.js"></script>
+<form id="contactForm" action="contact_form.php" method="post">
+<h3 class="heading">Contact us using this form</h3>
+<p> </p>
+<fieldset>
+<div>
+<input name="name"  id="name" type="text" class="form-poshytip" title="Enter your full name" />
+                                <label>Name</label>
+</div>
+<div>
+<input name="email"  id="email" type="text" class="form-poshytip" title="Enter your email address" />
+                                <label>Email</label>
+</div>
+<div>
+
+<input name="contact_no"  id="contact_no" type="text" class="form-poshytip" title="Enter your Contact Number" />
+                                <label>Contact Number</label></label>
+</div>
+<div>
+<textarea  name="comments"  id="comments" rows="5" cols="20" class="form-poshytip" title="Enter your comments"></textarea>
+</div>
+
+
+<p><input type="button" value="Send" name="submit" id="submit" /> <span id="error" class="warning">Message</span></p>
+</fieldset>
+
+</form>
+<p id="sent-form-msg" class="success">Form data sent. Thanks for your comments.We will update you within 24 hours. </p>
+<!-- ENDS form -->
+
+<script type="text/javascript">
+	jQuery(document).ready(function($){
+
+    // hide messages 
+    $("#error").hide();
+    $("#sent-form-msg").hide();
+
+    // on submit...
+    $("#contactForm #submit").click(function() {
+        $("#error").hide();
+
+        //required:
+
+        //name
+        var name = $("input#name").val();
+        if(name == ""){
+            $("#error").fadeIn().text("Name required.");
+            $("input#name").focus();
+            return false;
+        }
+
+        // email
+        var email = $("input#email").val();
+        if(email == ""){
+            $("#error").fadeIn().text("Email required");
+            $("input#email").focus();
+            return false;
+        }
+
+        // contact_no
+        var contact_no = $("input#contact_no").val();
+        if(contact_no == ""){
+            $("#error").fadeIn().text("Contact number required");
+            $("input#contact_no").focus();
+            return false;
+        }
+
+        // comments
+        var comments = $("#comments").val();
+
+
+        // data string
+        var dataString = 'name='+ name
+                        + '&email=' + email        
+                        + '&contact_no=' + contact_no
+                        + '&comments=' + comments
+
+        // ajax
+        $.ajax({
+            type:"POST",
+            data: dataString,
+            success: success()
+        });
+    });  
+
+
+    // on success...
+     function success(){
+        $("#sent-form-msg").fadeIn();
+        $("#contactForm").fadeOut();
+     }
+
+    return false;
+});
+	
+</script>
+
+</body>
+</html>
