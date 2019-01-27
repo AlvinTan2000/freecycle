@@ -1,5 +1,5 @@
 <p align="center">
-<img width=100% src="https://github.com/KidoVin01/freecycle/blob/master/gallery.jpg"
+<img width=100% src="https://github.com/KidoVin01/freecycle/blob/master/gallery.png"
 </p>
 
 ## Inspiration
