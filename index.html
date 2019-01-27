@@ -1,150 +1,236 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Freecycle</title>
+    <link rel="stylesheet" type="text/css" href="ahhhhhhhhhcss.css">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+          integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+          crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+            integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+            crossorigin=""></script>
+    <script src="jquery-3.3.1.js"></script>
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
-        crossorigin="" />
-    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js" integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
-        crossorigin=""></script>
-        <script src="jquery-3.3.1.js"></script>
-</head>
-
-<body>
-    <div id="mapid" style="width: 600px; height: 400px"></div>
-
-    <script>
-
-        var mymap = L.map('mapid', {
-            zoomControl: false
-        })
-            .setView([-36.379279167407944, 145.39169311523438], 15); //set center of map to be conuhacks location
-        /*
-         * second property here it the zoom property of the map. a low number means zoomed out,
-         * high number means very zoomed out
-         */
-
-        /*
-        * Imagery refers to the map itself (its using tiled images) Can change in basemap providers to vary it up
-        * can change this at http://leaflet-extras.github.io/leaflet-providers/preview/
-        *
-        * */
-
-        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
-            maxZoom: 18,
-            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
-                '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
-                'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-            id: 'mapbox.streets',
-            accessToken: 'pk.eyJ1IjoiZXBvZ2dpMSIsImEiOiJjanJkcG9jdG4xcXpvNDRsaTRra3dmc3c5In0.hhjWHf6KGou773hT-X8v4g'
-        }).addTo(mymap);
-
-
-
-        /*
-        * different icon layouts
-        *
-        *
-        * */
-
-        var FreeFoodIcon = L.icon({
-            iconUrl: 'food.svg',
-            iconSize: [29, 24],
-            iconAnchor: [9, 21],
-            popupAnchor: [0, -14]
-        });
-
-        var FreeBottlesIcon = L.icon({
-            iconUrl: 'bottles.svg',
-            iconSize: [29, 24],
-            iconAnchor: [9, 21],
-            popupAnchor: [0, -14]
-        });
-
-        var FreeEWasteIcon = L.icon({
-            iconUrl: 'EWaste.svg',
-            iconSize: [29, 24],
-            iconAnchor: [9, 21],
-            popupAnchor: [0, -14]
-        });
-
-        var binIcon = L.icon({
-            iconUrl: 'bin.svg',
-            iconSize: [29, 24],
-            iconAnchor: [9, 21],
-            popupAnchor: [0, -14]
-        });
-
-        var popup = L.popup();
-
-        L.marker([45.49564057468219, -73.57970416545868], { icon: binIcon }).addTo(mymap).bindPopup("ConuHacks");
-
-        /*
-        * looping over marker data.
-        * issues: i do not know how to make this work with an external file correctly. will work around this
-        * by using an xml request.
-        * */
-
-        var markers =
-            [{
-                "name": "FreeFood",
-                "url": "https://en.wikipedia.org/wiki/Canada",
-                "lat": 45.7,
-                "lng": -73.7
-            },
-            {
-                "name": "FreeBottles",
-                "url": "https://en.wikipedia.org/wiki/Anguilla",
-                "lat": 18.220554,
-                "lng": -63.068615
-            },
-            {
-                "name": "Japan",
-                "url": "https://en.wikipedia.org/wiki/Japan",
-                "lat": 36.204824,
-                "lng": 138.252924
-            }
-            ];
-
-        for (var i = 0; i < markers.length; ++i) {
-            if (markers[i].name.localeCompare("FreeFood")) {
-                L.marker([markers[i].lat, markers[i].lng], { icon: FreeFoodIcon })
-                    .bindPopup('<a href="' + markers[i].url + '" target="_blank">' + markers[i].name + '</a>')
-                    .addTo(mymap);
-            }
-            else if (markers[i].name.localeCompare("FreeBottles")) {
-                L.marker([markers[i].lat, markers[i].lng], { icon: FreeBottlesIcon })
-                    .bindPopup('<a href="' + markers[i].url + '" target="_blank">' + markers[i].name + '</a>')
-                    .addTo(mymap);
-            }
-            else {
-                L.marker([markers[i].lat, markers[i].lng])
-                    .bindPopup('<a href="' + markers[i].url + '" target="_blank">' + markers[i].name + '</a>')
-                    .addTo(mymap);
-            }
+    <style>
+        /* Set the size of the div element that contains the map */
+        #map {
+            height: 350px;  /* The height is 400 pixels */
+            width: 650px;  /* The width is the width of the web page */
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
         }
 
+        body {background-image : url("https://www.pixelstalk.net/wp-content/uploads/2016/09/2D-Triangle-Landscape-Wallpaper-2048x1216.jpg");}
 
 
-        /*
-        * reading a geojson file because alvin said so
-        *
-        * will figure out how to deal with external geojson files later. for now, hard code data
-        *
-        * */
+    </style>
+
+</head>
+<body>
+    <br>
+<h1 style="text-align: center; color: white;"><u>Freecycle</u></h1>
+<main class="calendar-contain">
 
 
-    
- var geoJsonData=[];
+    <aside class="calendar__sidebar">
+        <h2 class="sidebar__heading">Your Information<br></h2>
+        <ul class="sidebar__list">
+            <div class="container">
+                <form>
+                    <div class="row">
+                        <form method="post" action="postDB.php">
+                        <div class="input-group input-group-icon">
+                            <input id="nameid" type="text" name="name" placeholder="Your name" class="form-control"/>
+                            <div class="input-icon"><i class="fa fa-user"></i></div>
+                        </div>
+                        <div class="input-group input-group-icon">
+                            <input id="location" type="text" name="location" placeholder="Location" class="form-control"/>
+                            <div class="input-icon"><i class="fa fa-location"></i></div>
+                        </div>
+                        <div class="input-group input-group-icon">
+                            <input id="numOfItems" type="text" name="numOfItems" placeholder="Numbers of items" class="form-control"/>
+                            <div class="input-icon"><i class="fa fa-location"></i></div>
+                        </div>
+                        <div class="input-group input-group-icon">
+                            <!-- <label >Collection: <br></label> -->
+                            <select id="collection"  class="form-control" name = "Day">
+                                <option disabled selected value=""> Collection </option>
+                                <option id="sunday" value="Sunday"> Sunday </option>
+                                <option id="monday" value="Monday"> Monday</option>
+                                <option id="tuesday" value="Tuesday"> Tuesday</option>
+                                <option id="wednesday" value="Wednesday"> Wednesday</option>
+                                <option id="thursday" value="Thursday"> Thursday</option>
+                                <option id="friday" value="Friday"> Friday</option>
+                                <option id="saturday" value="Saturday"> Saturday</option>
+                            </select>
+                             <div class="input-icon"><i class="fa fa-tellMeTheDeets"></i></div>
+                        </div>
+
+                        <div class="input-group input-group-icon">
+                            <!-- <label>Items: <br></label> -->
+                            <select id="free" class="form-control" name = "free" >
+                                <option disabled selected value=""> Items </option>
+                                <option id="recbin" value="RecyclinBin"> Recycling Bin </option>
+                                <option id="freeFood" value="FreeFood"> Free Food</option>
+                                <option id="cardBox" value="Cardbox"> Cardboard Boxes</option>
+                                <option id="freeElec" value="FreeElectronics"> Free Electronics</option>
+                            </select>
+                            <div class="input-icon"><i class="fa fa-tellMeTheDeets"></i></div>
+                        </div>
+
+                    </div>
+                    <br>
+                    <div class="row">
+                        <input type="submit" name="submit" value="Submit" id="button" class="btn btn-primary"></button>	
+                    </div>
+                </form>
+		</form>
+
+               
+            </div>
+        </ul>
+    </aside>
+
+    <section class="calendar__days">
+        <section class="calendar__top-bar">
+
+        </section>
+        <h3 align="center"></h3>
+        <!--The div element for the map -->
+        <div id="mapid" style= "width: 620px; height: 400px; display: block; margin-left: auto; margin-right: auto;"></div>
+        <script>
+            var mymap = L.map('mapid', {
+                zoomControl : false
+            })
+                .setView([-36.379279167407944, 145.39169311523438], 15); //set center of map to be conuhacks location
+            /*
+             * second property here it the zoom property of the map. a low number means zoomed out,
+             * high number means very zoomed out
+             */
+
+            /*
+            * Imagery refers to the map itself (its using tiled images) Can change in basemap providers to vary it up
+            * can change this at http://leaflet-extras.github.io/leaflet-providers/preview/
+            *
+            * */
+
+            /*L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}', {
+                maxZoom: 18,
+                attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+                    '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+                    'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+                id: 'mapbox.streets',
+                accessToken: 'pk.eyJ1IjoiZXBvZ2dpMSIsImEiOiJjanJkcG9jdG4xcXpvNDRsaTRra3dmc3c5In0.hhjWHf6KGou773hT-X8v4g'
+            }).addTo(mymap);*/
+
+            L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png', {
+                attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
+                subdomains: 'abcd',
+                maxZoom: 19
+            }).addTo(mymap);
+
+
+
+            /*
+            * different icon layouts
+            *
+            *
+            * */
+
+            var FreeFoodIcon = L.icon({
+                iconUrl: 'food.svg',
+                iconSize: [29, 24],
+                iconAnchor: [9, 21],
+                popupAnchor: [0, -14]
+            });
+
+            var FreeBottlesIcon = L.icon({
+                iconUrl: 'bottles.svg',
+                iconSize: [29, 24],
+                iconAnchor: [9, 21],
+                popupAnchor: [0, -14]
+            });
+
+            var FreeEWasteIcon = L.icon({
+                iconUrl: 'EWaste.svg',
+                iconSize: [29, 24],
+                iconAnchor: [9, 21],
+                popupAnchor: [0, -14]
+            });
+
+            var binIcon = L.icon({
+                iconUrl: 'bin.svg',
+                iconSize: [29, 24],
+                iconAnchor: [9, 21],
+                popupAnchor: [0, -14]
+            });
+
+            var popup = L.popup();
+
+            L.marker([45.49564057468219, -73.57970416545868], {icon:binIcon} ).addTo(mymap).bindPopup("ConuHacks");
+
+            /*
+            * looping over marker data.
+            * issues: i do not know how to make this work with an external file correctly. will work around this
+            * by using an xml request.
+            * */
+
+            var markers =
+                [{
+                    "name": "FreeFood",
+                    "url": "https://en.wikipedia.org/wiki/Canada",
+                    "lat": 45.7,
+                    "lng": -73.7
+                },
+                    {
+                        "name": "FreeBottles",
+                        "url": "https://en.wikipedia.org/wiki/Anguilla",
+                        "lat": 18.220554,
+                        "lng": -63.068615
+                    },
+                    {
+                        "name": "Japan",
+                        "url": "https://en.wikipedia.org/wiki/Japan",
+                        "lat": 36.204824,
+                        "lng": 138.252924
+                    }
+                ];
+
+            for ( var i=0; i < markers.length; ++i )
+            {
+                if (markers[i].name.localeCompare("FreeFood"))
+                {
+                    L.marker( [markers[i].lat, markers[i].lng], {icon:FreeFoodIcon} )
+                        .bindPopup( '<a href="' + markers[i].url + '" target="_blank">' + markers[i].name + '</a>' )
+                        .addTo( mymap );
+                }
+                else if (markers[i].name.localeCompare("FreeBottles"))
+                {
+                    L.marker( [markers[i].lat, markers[i].lng], {icon:FreeBottlesIcon} )
+                        .bindPopup( '<a href="' + markers[i].url + '" target="_blank">' + markers[i].name + '</a>' )
+                        .addTo( mymap );
+                }
+                else
+                {
+                    L.marker( [markers[i].lat, markers[i].lng])
+                        .bindPopup( '<a href="' + markers[i].url + '" target="_blank">' + markers[i].name + '</a>' )
+                        .addTo( mymap );
+                }
+            }
+
+            
+
+            var geoJsonData=[];
             $.ajax({
                 type: "POST",
                 url: "http://localhost/conuhacks/indexCONU.php",
                 dataType: "",
                 success: function(data){
-                   
-                data = JSON.parse(data);
+
+                    data = JSON.parse(data);
                     for (key in Object.keys(data)){
                         dataArray={
                             "type": "Feature",
@@ -161,41 +247,71 @@
                         };
                         geoJsonData.push(dataArray);
                     }
-                    //console.log(geoJsonData);
-                    L.geoJson(geoJsonData, {
-                pointToLayer: function (geoJsonPoint, latlng) {
-                    //only features that are defined as points will be displayed on the map
-                    //given a features type, we can change it's styling depnding on it
-                    console.log(geoJsonPoint, latlng);
-                    if (geoJsonPoint.properties.type === 'Recycle Bin') {
-                        return L.marker(latlng, {
-                            icon: binIcon
-                        });
-                    }
-                    else {
-                        return L.marker(latlng, {
-                            icon: binIcon
-                        });
-                    }
+                        L.geoJson(geoJsonData, {
+                        pointToLayer: function (geoJsonPoint, latlng) {
+                            //only features that are defined as points will be displayed on the map
+                            //given a features type, we can change it's styling depnding on it
+                                if (geoJsonPoint.properties.type === 'Recycle Bin') {
+                                return L.marker(latlng, {
+                                    icon: binIcon
+                                });
+                            }
+                            else {
+                                return L.marker(latlng, {
+                                    icon: binIcon
+                                });
+                            }
 
-                },
-                //this is useful for defining text boxes with associated points. it can give information with
-                //regards to the point
-                onEachFeature: function (feature, layer) {
-                    if (feature.geometry.type === 'Point') {
-                        //binding a popup to the layer allows them to be visualized
-                        layer.bindPopup(feature.properties.collection + " / " + feature.properties.number_of)
-                    }
-                }
+                        },
+                        //this is useful for defining text boxes with associated points. it can give information with
+                        //regards to the point
+                        onEachFeature: function (feature, layer) {
+                            if (feature.geometry.type === 'Point') {
+                                //binding a popup to the layer allows them to be visualized
+                                layer.bindPopup(feature.properties.collection + " / " + feature.properties.number_of)
+                            }
+                        }
 
-            }).addTo(mymap);
+                    }).addTo(mymap);
                 }
             });
 
-
-            
         </script>
 
-</body>
 
+
+        <br>
+        <p style="...">
+            Either find or donate recycled material to promote charities and sustainability in your local area!
+        </p>
+
+        <p style="...">
+            It be cans, electronic waste, cardboard boxes, or plastic bottles! Specify a time or date during the week
+            for pick up and support a greener lifestyle!
+        </p>
+
+
+        <p style="margin-left: 0px">
+           At the moment,  We currently only serve in Australia.
+        </p>
+
+        <section class="calendar__week">
+
+        </section>
+
+        <section class="calendar__week">
+
+        </section>
+
+        <section class="calendar__week">
+
+        </section>
+
+        <section class="calendar__week">
+
+        </section>
+    </section>
+
+</main>
+</body>
 </html>
