@@ -12,6 +12,8 @@
             integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
             crossorigin=""></script>
     <script src="jquery-3.3.1.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol/dist/L.Control.Locate.min.js" charset="utf-8"></script>
+
 
     <style>
         /* Set the size of the div element that contains the map */
@@ -41,7 +43,6 @@
             <div class="container">
                 <form>
                     <div class="row">
-                        <form method="post" action="postDB.php">
                         <div class="input-group input-group-icon">
                             <input id="nameid" type="text" name="name" placeholder="Your name" class="form-control"/>
                             <div class="input-icon"><i class="fa fa-user"></i></div>
@@ -84,12 +85,9 @@
                     </div>
                     <br>
                     <div class="row">
-                        <input type="submit" name="submit" value="Submit" id="button" class="btn btn-primary"></button>	
+                        <button id="button" type="button" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
-		</form>
-
-               
             </div>
         </ul>
     </aside>
@@ -130,6 +128,13 @@
                 attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a> &copy; <a href="https://carto.com/attributions">CARTO</a>',
                 subdomains: 'abcd',
                 maxZoom: 19
+            }).addTo(mymap);
+
+            L.control.locate({
+                position: 'topright',
+                strings: {
+                    title: "Where am i?"
+                }
             }).addTo(mymap);
 
 
@@ -221,7 +226,7 @@
                 }
             }
 
-            
+
 
             var geoJsonData=[];
             $.ajax({
@@ -247,11 +252,13 @@
                         };
                         geoJsonData.push(dataArray);
                     }
-                        L.geoJson(geoJsonData, {
+                    //console.log(geoJsonData);
+                    L.geoJson(geoJsonData, {
                         pointToLayer: function (geoJsonPoint, latlng) {
                             //only features that are defined as points will be displayed on the map
                             //given a features type, we can change it's styling depnding on it
-                                if (geoJsonPoint.properties.type === 'Recycle Bin') {
+                            console.log(geoJsonPoint, latlng);
+                            if (geoJsonPoint.properties.type === 'Recycle Bin') {
                                 return L.marker(latlng, {
                                     icon: binIcon
                                 });
