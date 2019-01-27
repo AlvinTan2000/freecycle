@@ -1,3 +1,7 @@
+<p align="center">
+<img width=100% src="https://github.com/KidoVin01/freecycle/blob/master/gallery.jpg"
+</p>
+
 ## Inspiration
 As our society moves to a more sustainable coexistence, we aimed to contribute by offering access to community-based, mostly free, services in the local area. Naturally, the TD Bank Group Insurance and Accenture challenges piqued our interest.
 ## What it does
